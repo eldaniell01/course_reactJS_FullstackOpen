@@ -1,0 +1,1 @@
+export const Button = ({onClick, text}) => <button onClick={props.onClick}>{text}</button>
