@@ -1,5 +1,9 @@
-export const Note = ({note}) => {
+export const Note = ({note, toggleImportance}) => {
+  const label = note.important ? 'importante': 'no importante'
   return(
-    <li>{note.content}</li>
+    <li className="note">
+      {note.content}
+      <button onClick={toggleImportance}>{label}</button>
+    </li>
   )
 }
