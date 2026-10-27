@@ -109,3 +109,23 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.notitication{
+ 
+  font-size: 20px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.notification--success {
+  color: green;
+  background-color: #dfd;
+  border: 2px solid green;
+}
+
+.notification--error {
+  color: red;
+  background-color: #fdd;
+  border: 2px solid red;
+}
