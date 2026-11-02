@@ -11,7 +11,7 @@ import { Footer } from './components/Footer'
 import { Note } from './components/Note'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState('algun error paso... ')
