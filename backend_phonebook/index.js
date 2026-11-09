@@ -20,6 +20,7 @@ app.use(express.json())
 app.use(requestLogger)
 app.use(morgan(':method :url :status :body :res[content-length] - :response-time ms'))
 app.use(cors())
+app.use(express.static('dist'))
 
 let personas = [
     { 
