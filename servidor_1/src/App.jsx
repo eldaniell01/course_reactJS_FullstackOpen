@@ -11,7 +11,7 @@ import { Footer } from './components/Footer'
 import { Note } from './components/Note'
 
 const App = () => {
-  const [notes, setNotes] = useState(null)
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('a new note...')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState('algun error paso... ')
@@ -40,7 +40,7 @@ const hookGet = ()=>{
   }
 
   const toggleImportanceOf = (id)=>{
-    const url = `http://localhost:3001/notes/${id}`
+    const url = `https://course-reactjs.onrender.com/api/notes/${id}`
     const note = notes.find(n=>n.id === id)
     const changedNote = {...note, important: !note.important}
     notesServices
@@ -65,7 +65,7 @@ const hookGet = ()=>{
     console.log(event.target.value)
     setNewNote(event.target.value)
   }
-  
+
   return (
     <>
       <h1>NOTAS</h1>
