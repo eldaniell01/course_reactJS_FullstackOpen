@@ -10,7 +10,7 @@ app.use(express.json())
 
 app.use(express.static('dist'))
 
-const password = process.argv[2]
+/*const password = process.argv[2]
 const url = `mongodb://eldaniell01:${password}@ac-vqfb2by-shard-00-00.0sh3cuj.mongodb.net:27017,ac-vqfb2by-shard-00-01.0sh3cuj.mongodb.net:27017,ac-vqfb2by-shard-00-02.0sh3cuj.mongodb.net:27017/notes?ssl=true&replicaSet=atlas-10pb4k-shard-0&authSource=admin`
 
 mongoose.set('strictQuery',false)
@@ -30,7 +30,7 @@ noteSchema.set('toJSON', {
   } 
 })
 
-const Note = mongoose.model('Note', noteSchema)
+const Note = mongoose.model('Note', noteSchema)*/
 
 let notes = [
   {
