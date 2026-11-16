@@ -1,7 +1,10 @@
-
+require('dotenv').config()
 const express = require('express')
+const mongoose = require('mongoose')
+const Phonebook = require('./models/phonebook')
 const app = express()
 var morgan = require('morgan')
+const phonebook = require('./models/phonebook')
 
 const requestLogger = (request, response, next)=>{
   console.log('Method:', request.method)
@@ -45,7 +48,9 @@ let personas = [
 
 
 app.get('/api/persons', (request, response)=>{
-    response.json(personas)
+    phonebook.find({}).then(result=>{
+        response.json(result)
+    })
 })
 
 app.get('/info',(request, response)=>{
@@ -54,19 +59,16 @@ app.get('/info',(request, response)=>{
 })
 
 app.get('/api/persons/:id', (request, response)=>{
-  const id = request.params.id
-  const person = personas.find(person=> person.id===id)
-  if(person){
+  Phonebook.findById(request.params.id).then(person=>{
     response.json(person)
-  }else{
-    response.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/persons/:id', (request, response)=>{
   const id = request.params.id
-  personas = personas.filter(person=>person.id !== id)
-  response.status(204).end()
+  Phonebook.findByIdAndDelete(id).then(result=>{
+    response.json(result)
+  })
 })
 
 app.post('/api/persons', (request, response)=>{
@@ -83,14 +85,13 @@ app.post('/api/persons', (request, response)=>{
       error: 'ya hay un nombre igual'
     })
   }
-  const person = {
+  const person = new Phonebook({
     name: body.name,
     number: body.number,
-    id: String(Math.max(...personas.map(p => Number(p.id))) + 1)
-  }
-
-  personas = personas.concat(person)
-  response.json(person)
+  })
+  person.save().then(savePerson=>{
+    response.json(savePerson)
+  })
 })
 
 const unknownEndpoint = (request, response)=>{
