@@ -1,5 +1,7 @@
-
+require('dotenv').config()
 const express = require('express')
+const mongoose = require('mongoose')
+const Note = require('./models/note')
 const app = express()
 const http = require('http')
 
@@ -7,6 +9,28 @@ const http = require('http')
 app.use(express.json())
 
 app.use(express.static('dist'))
+
+const password = process.argv[2]
+const url = `mongodb://eldaniell01:${password}@ac-vqfb2by-shard-00-00.0sh3cuj.mongodb.net:27017,ac-vqfb2by-shard-00-01.0sh3cuj.mongodb.net:27017,ac-vqfb2by-shard-00-02.0sh3cuj.mongodb.net:27017/notes?ssl=true&replicaSet=atlas-10pb4k-shard-0&authSource=admin`
+
+mongoose.set('strictQuery',false)
+
+mongoose.connect(url, { family: 4 })
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  } 
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
 let notes = [
   {
@@ -34,18 +58,16 @@ const generateId = () => {
 }
 
 app.get('/api/notes', (request, response)=>{
-  response.json(notes)
+  Note.find({}).then(notes=>{
+    response.json(notes)
+  })
 })
 
 
 app.get('/api/notes/:id', (request, response) => {
-  const id = request.params.id
-  const note = notes.find(note=>note.id===id)
-  if(note){
+  Note.findById(request.params.id).then(note=>{
     response.json(note)
-  }else{
-    response.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/notes/:id', (request, response) => {
@@ -62,14 +84,14 @@ app.post('/api/notes', (request, response) => {
       error: 'contenido perdido'
     })
   }
-  const note = {
+  const note = new Note({
     content: body.content,
     important: body.important || false,
-    id: generateId(),
-  }
+  })
 
-  notes= notes.concat(note)
-  response.json(note)
+  note.save().then(saveNote => {
+    response.json(saveNote)
+  })
 })
 
 /*
