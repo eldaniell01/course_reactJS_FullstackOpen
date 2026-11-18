@@ -73,18 +73,6 @@ app.delete('/api/persons/:id', (request, response)=>{
 
 app.post('/api/persons', (request, response)=>{
   const body = request.body
-  const name = personas.filter(person => person.name === body.name)
-  if(!body.name || !body.number){
-    console.log(body)
-    return response.status(400).json({
-      error: 'contenido perdido'
-    })
-  }
-  if(name){
-    return response.status(400).json({
-      error: 'ya hay un nombre igual'
-    })
-  }
   const person = new Phonebook({
     name: body.name,
     number: body.number,

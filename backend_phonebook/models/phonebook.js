@@ -13,8 +13,8 @@ mongoose.connect(url, { family: 4 })
     console.log('error connecting to MongoDB:', error.message)
   })
 const phonebookSchema = new mongoose.Schema({
-  content: String,
-  important: Boolean,
+  name: String,
+  number: String,
 })
 
 phonebookSchema.set('toJSON', {

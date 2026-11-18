@@ -1,4 +1,4 @@
-GET http://localhost:3001/api/notes
+GET http://localhost:3001/api/notes/6afa52100b5718310f78f284
 
 ###
 POST http://localhost:3001/api/notes HTTP/1.1
@@ -6,5 +6,16 @@ content-type: application/json
 
 {
     "content": "asegurarse de que la aplicación funciona correctamente",
+    "important": true
+}
+###
+DELETE http://localhost:3001/api/notes/6af9e7130164f7f14676c2fc
+
+###
+PUT http://localhost:3001/api/notes/6af9fef37d65f88c296c7b75 HTTP/1.1
+content-type: application/json  
+
+{
+    "content": "aseguramiento",
     "important": true
 }

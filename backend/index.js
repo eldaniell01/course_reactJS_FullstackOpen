@@ -5,10 +5,10 @@ const Note = require('./models/note')
 const app = express()
 const http = require('http')
 
-
+app.use(express.static('dist'))
 app.use(express.json())
 
-app.use(express.static('dist'))
+
 
 /*const password = process.argv[2]
 const url = `mongodb://eldaniell01:${password}@ac-vqfb2by-shard-00-00.0sh3cuj.mongodb.net:27017,ac-vqfb2by-shard-00-01.0sh3cuj.mongodb.net:27017,ac-vqfb2by-shard-00-02.0sh3cuj.mongodb.net:27017/notes?ssl=true&replicaSet=atlas-10pb4k-shard-0&authSource=admin`
@@ -64,17 +64,39 @@ app.get('/api/notes', (request, response)=>{
 })
 
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id).then(note=>{
-    response.json(note)
+    if(note){
+      response.json(note)
+    }else{
+      response.status(404).end()
+    }
   })
+  .catch(error=> next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
   const id = request.params.id
-  notes = notes.filter(note=>note.id !== id)
+  Note.findByIdAndDelete(id).then(result=>{
+    response.status(204).end()
+  })
+  .catch(error=> next(error))
+})
 
-  response.status(204).end()
+app.put('/api/notes/:id', (request, response, next) => {
+  const { content, important } = request.body
+  Note.findById(request.params.id)
+    .then(note => {
+      if (!note) {
+        return response.status(404).end()
+      }
+      note.content = content
+      note.important = important
+      return note.save().then((updatedNote) => {
+        response.json(updatedNote)
+      })
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/notes', (request, response) => {
@@ -93,6 +115,25 @@ app.post('/api/notes', (request, response) => {
     response.json(saveNote)
   })
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler)
 
 /*
 app.get('/', (request, response)=>{
