@@ -70,7 +70,9 @@ const App=()=> {
           }, 5000);
         })
         .catch(error => {
-          alert('hay un error '+error)
+          setErrorMessage(error.response.data.error)
+          setErrorType('error')
+          
         })
     }
   }

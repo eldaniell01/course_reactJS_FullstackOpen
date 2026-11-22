@@ -2,6 +2,12 @@ POST http://localhost:3001/api/persons HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Daniel Montepeque",
-    "number": "451521322"
+    "name": "Jose Montepeque",
+    "number": "45158888"
 }
+
+###
+GET http://localhost:3001/api/persons/6afa06dd38d70b54c716c529
+
+###
+DELETE http://localhost:3001/api/persons/6afd35081a9ac148c221ab20
