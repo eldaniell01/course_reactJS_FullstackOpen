@@ -18,12 +18,20 @@
     "dev": "node --watch index.js",
     "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "lint": "eslint ."
   },
   "dependencies": {
     "dotenv": "^18.0.10",
     "express": "^5.3.0",
     "mongodb": "^7.9.0",
     "mongoose": "^9.12.1"
+  },
+  "devDependencies": {
+    "@eslint-react/eslint-plugin": "^5.30.6",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^6.0.1",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0"
   }
 }
