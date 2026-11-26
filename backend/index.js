@@ -2,7 +2,10 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const Note = require('./models/note')
-const app = express()
+const app = require('./app')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
 const http = require('http')
 
 app.use(express.static('dist'))
@@ -152,6 +155,6 @@ const app = http.createServer((req, res) => {
 })*/
 
 const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
